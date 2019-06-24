@@ -2,11 +2,15 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-struct bin_tree {
-    int data;
-    struct bin_tree * right, * left;
-}; typedef struct bin_tree node;
+typedef struct node {
+    char data;
+    struct node * right;
+    struct node * left;
 
+} node;
+
+struct node *raiz; //Ponteiro da raiz
+struct node *alocar; //Ponteiro para fazer alocação
 
 
 char* ReadFile(char *filename)
@@ -49,37 +53,59 @@ char* ReadFile(char *filename)
     return buffer;
 }
 
-void insert(node ** tree, char val [])
-{
-    puts(val);
-    node *temp = NULL;
+// void insert(node ** tree, char val[])
+// {
+    
+//     int i = 0;
+//     char * aux;
+
+//     while(val[i] != '\0'){
+        
+//         if(val[i] == '\n'){    
+//             // printf("%c \n", val[i+1]);
+//             insertNode(tree, val[i+1]);
+//         }
+//                 i++;
+//             }
+
+// }
+
+// void insertNode(node ** tree, char val[]){
+
+//     node *temp = NULL;
+
+//             if(!(*tree)){
+//                 temp = (node *)malloc(sizeof(node));
+//                 temp->left = temp->right = NULL;
+//                 temp->data = val;
+//                 *tree = temp;
+//                 printf("%c\n\n", temp->data);
+        
+//             }
+//             if(strcmp(val, (*tree)->data)<0)
+//             {
+//                 printf("entrou\n\n");
+//                 insertNode(&(*tree)->left, val);
+//             }
+//             else if(strcmp(val, (*tree)->data) > 0)
+//             {
+//                 insertNode(&(*tree)->right, val);
+//             }
+// }
+
+
+void insert(node **tree, char val[]){
+
     int i = 0;
+    char * aux;
+
     while(val[i] != '\0'){
         
-        if(val[i].isalpha()){
-
+        if(val[i] == '\n'){    
+            printf("%c \n", val[i+1]);
         }
-
-        i++;
-    }
-    if(!(*tree))
-    {
-        temp = (node *)malloc(sizeof(node));
-        temp->left = temp->right = NULL;
-        temp->data = val;
-        *tree = temp;
-        return;
-    }
-
-    if(val < (*tree)->data)
-    {
-        insert(&(*tree)->left, val);
-    }
-    else if(val > (*tree)->data)
-    {
-        insert(&(*tree)->right, val);
-    }
-
+                i++;
+            }
 }
 
 void print_inorder(node * tree)
@@ -112,7 +138,7 @@ void deltree(node * tree)
     }
 }
 
-node* search(node ** tree, int val)
+node* search(node ** tree, char val)
 {
     if(!(*tree))
     {
@@ -144,12 +170,39 @@ void print_preorder(node * tree)
 
 }
 
+void print2DUtil(node *root, int space) 
+{   
+    int count=0;
+    // Base case 
+    if (root == NULL) 
+        return; 
+  
+    // Increase distance between levels 
+    space += count; 
+  
+    // Process right child first 
+    print2DUtil(root->right, space); 
+  
+    // Print current node after space 
+    // count 
+    printf("\n"); 
+    for (int i = count; i < space; i++) 
+        printf(" "); 
+    printf("%d\n", root->data); 
+  
+    // Process left child 
+    print2DUtil(root->left, space); 
+}
+
 int main()
 {
     struct node *node = (struct node*)malloc(sizeof(node));
 
     char *string = ReadFile("morse.txt");
-    insert(node, string);
+    insert(&node, string);
+
+    // print2DUtil(node, 2);
+
     if (string)
     {
         // puts(string);
