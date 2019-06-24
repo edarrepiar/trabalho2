@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <string.h>
 
 typedef struct node {
     char data;
@@ -93,19 +94,71 @@ char* ReadFile(char *filename)
 //             }
 // }
 
+int str_cmp(char* s1, char* s2)
+{   
 
-void insert(node **tree, char val[]){
+    // printf("S1: %c S2: %c ", s1, s2);
+    while (s1 != '\0' && s1 == s2)
+    {
+        ++s1;
+        ++s2;
+    }
+
+    if (s1 == s2)
+    {
+        return 0;
+    }
+
+    return s1 < s2 ? -1 : 1;
+}
+
+
+
+void insert(node *tree, char *val){
 
     int i = 0;
     char * aux;
+    node *temp = NULL;
 
     while(val[i] != '\0'){
+        int count = i+1;
         
         if(val[i] == '\n'){    
-            printf("%c \n", val[i+1]);
-        }
-                i++;
+            printf("%c \n", val[count]);
+
+            if(temp == NULL){
+                temp = (struct node *) malloc(sizeof(struct node));
+                temp->left = temp->right = NULL;
+                temp->data = val[count];
+                // printf("DATA: %c \n\n", temp->data);
+                // printf("VAL1: %c \n\n", val[count]);
+                tree = temp;
+            } 
+            else {
+                char tempVal = val[count];
+                char *treeData = tree->data;
+                // printf("VAL: %c \n\n", tempVal);
+                // printf("TREE: %c \n\n", treeData);
+                int valor; 
+
+                if(str_cmp(tempVal, treeData)) {
+                    insert(tree->left, val);
+                } 
+                
+                else {
+                    insert(tree->right, val);
+                }
             }
+            if(val[i+1] == '\0'){
+                break;
+            }
+
+        }
+
+        
+        i++;
+            
+    }
 }
 
 void print_inorder(node * tree)
@@ -201,7 +254,7 @@ int main()
     char *string = ReadFile("morse.txt");
     insert(&node, string);
 
-    // print2DUtil(node, 2);
+    print2DUtil(node, 2);
 
     if (string)
     {
