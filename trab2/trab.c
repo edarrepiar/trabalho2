@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 struct bin_tree {
-int data;
-struct bin_tree * right, * left;
-};
-typedef struct bin_tree node;
+    int data;
+    struct bin_tree * right, * left;
+}; typedef struct bin_tree node;
+
+
 
 char* ReadFile(char *filename)
 {
@@ -27,7 +29,7 @@ char* ReadFile(char *filename)
 
        // Read it all in one operation
        read_size = fread(buffer, sizeof(char), string_size, handler);
-
+        
        // fread doesn't set it so put a \0 in the last position
        // and buffer is now officially a string
        buffer[string_size] = '\0';
@@ -47,9 +49,19 @@ char* ReadFile(char *filename)
     return buffer;
 }
 
-void insert(node ** tree, int val)
+void insert(node ** tree, char val [])
 {
+    puts(val);
     node *temp = NULL;
+    int i = 0;
+    while(val[i] != '\0'){
+        
+        if(val[i].isalpha()){
+
+        }
+
+        i++;
+    }
     if(!(*tree))
     {
         temp = (node *)malloc(sizeof(node));
@@ -134,10 +146,13 @@ void print_preorder(node * tree)
 
 int main()
 {
+    struct node *node = (struct node*)malloc(sizeof(node));
+
     char *string = ReadFile("morse.txt");
+    insert(node, string);
     if (string)
     {
-        puts(string);
+        // puts(string);
         free(string);
     }
 
